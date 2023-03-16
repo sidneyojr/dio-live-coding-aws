@@ -18,11 +18,11 @@ exports.handler = async (event, context) => {
         requestJSON = JSON.parse(event.body);
         await dynamo
           .put({
-            TableName: "Products",
+            TableName: "Produtos",
             Item: {
               id: requestJSON.id,
-              price: requestJSON.price,
-              name: requestJSON.name
+              descricao: requestJSON.descricao,
+              preco: requestJSON.preco
             }
           })
           .promise();
@@ -32,7 +32,7 @@ exports.handler = async (event, context) => {
         console.log(event.pathParameters.id)
         await dynamo
           .delete({
-            TableName: "Products",
+            TableName: "Produtos",
             Key: {
               id: event.pathParameters.id
             }
@@ -43,7 +43,7 @@ exports.handler = async (event, context) => {
       case "GET /items/{id}":
         body = await dynamo
           .get({
-            TableName: "Products",
+            TableName: "Produtos",
             Key: {
               id: event.pathParameters.id
             }
@@ -51,19 +51,19 @@ exports.handler = async (event, context) => {
           .promise();
         break;
       case "GET /items":
-        body = await dynamo.scan({ TableName: "Products" }).promise();
+        body = await dynamo.scan({ TableName: "Produtos" }).promise();
         break;
       case "PUT /items/{id}":
          requestJSON = JSON.parse(event.body);
         await dynamo
           .update({
-            TableName: "Products",
+            TableName: "Produtos",
             Key: {
               id: event.pathParameters.id
             },
-            UpdateExpression: 'set price = :r',
+            UpdateExpression: 'set preco = :r',
             ExpressionAttributeValues: {
-             ':r': requestJSON.price,
+             ':r': requestJSON.preco,
             },
           })
           .promise();
